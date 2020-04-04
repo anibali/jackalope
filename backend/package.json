@@ -1,0 +1,36 @@
+{
+  "name": "jackalope-backend",
+  "version": "0.1.0+dev",
+  "author": "Aiden Nibali",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "build": "babel -d lib/ src/",
+    "prepack": "npm run build",
+    "start": "./start.sh",
+    "test": "NODE_ENV=test mocha --require @babel/register"
+  },
+  "bin": {
+    "jackalope-backend": "lib/entryPoint.js"
+  },
+  "files": [
+    "/lib"
+  ],
+  "dependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/preset-env": "7.9.0",
+    "@babel/register": "7.9.0",
+    "@colyseus/schema": "0.5.35",
+    "argparse": "1.0.10",
+    "colyseus": "0.12.5",
+    "cors": "2.8.5",
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "babel-loader": "8.1.0",
+    "chai": "4.2.0",
+    "mocha": "7.1.1",
+    "nodemon": "2.0.2"
+  }
+}
