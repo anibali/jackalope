@@ -27,6 +27,12 @@ export default class extends Room {
       this.state.currentTurn = client.sessionId;
       // We've filled all player slots, so lock the room to prevent anyone else from joining.
       this.lock();
+      // Draw player hands.
+      Object.keys(this.state.players).forEach(player => {
+        for(let i = 0; i < 7; ++i) {
+          this.state.drawCard(player);
+        }
+      });
     }
 
     console.log(`${client.id} joined ${this.roomId}`);

@@ -32,6 +32,7 @@ module.exports = {
   entry: {
     app: ['./src/entryPoint.js', './src/styles/main.global.css'],
   },
+  devtool: mode === 'production' ? false : 'inline-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: `${assetBasename}.js`,
