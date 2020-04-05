@@ -1,12 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
+import Board from './Board';
+import Hand from './Hand';
+import GameClientContext from '../GameClientContext';
 
-const ClientRoot = ({ store }) => (
+
+const ClientRoot = ({ store, gameClient }) => (
   <Provider store={store}>
-    <div>
-      This is the ClientRoot component.
-    </div>
+    <GameClientContext.Provider value={gameClient}>
+      <Board />
+      <Hand />
+    </GameClientContext.Provider>
   </Provider>
 );
 

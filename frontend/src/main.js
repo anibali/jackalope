@@ -40,17 +40,17 @@ const currentQueryParams = () => {
 export default () => {
   const store = createStore();
 
-  const params = currentQueryParams();
-
   const gameServerAddress = `${window.location.protocol.replace('http', 'ws')}//${window.location.hostname}:2567`;
-  const client = new Colyseus.Client(gameServerAddress);
+  const gameClient = new Colyseus.Client(gameServerAddress);
 
-  let joinPromise;
-  if(params.roomId) {
-    joinPromise = client.joinById(params.roomId);
-  } else {
-    joinPromise = client.create('game_2p_room', { private: true });
-  }
+  // const params = currentQueryParams();
+  // let joinPromise;
+  // if(params.roomId) {
+  //   joinPromise = gameClient.joinById(params.roomId);
+  // } else {
+  //   joinPromise = gameClient.create('game_2p_room', { private: true });
+  // }
+  const joinPromise = gameClient.joinOrCreate('game_2p_room', { private: false });
 
   joinPromise.then(room => {
     store.dispatch(setRoomInfo({ sessionId: room.sessionId, roomId: room.id }));
@@ -68,5 +68,5 @@ export default () => {
 
   // Mount our React root component in the DOM.
   const mountPoint = document.getElementById('root');
-  ReactDOM.render(<ClientRoot store={store} />, mountPoint);
+  ReactDOM.render(<ClientRoot store={store} gameClient={gameClient} />, mountPoint);
 };
