@@ -1,6 +1,7 @@
 import { Room } from 'colyseus';
 
 import GameState from './GameState';
+import { isOneEyedJack, isTwoEyedJack } from './getCardInfo';
 
 
 export default class extends Room {
@@ -53,7 +54,10 @@ export default class extends Room {
         return;
       }
       // 3. Validate that the move is valid.
-      // TODO: Check current turn.
+      if(this.state.currentTurn !== card.owner) {
+        // Can't play when it's not your turn.
+        return;
+      }
       if(card.discarded) {
         return;
       }
@@ -62,13 +66,25 @@ export default class extends Room {
         // Can't play onto a joker square.
         return;
       }
-      if(this.state.boardLayout[boardLocation] % 52 !== cardNumber % 52) {
-        // TODO: Jack logic.
+      if(this.state.boardChips[boardLocation]) {
+        if(!isOneEyedJack(cardNumber)) {
+          return;
+        }
+      } else if((this.state.boardLayout[boardLocation] % 52 !== cardNumber % 52) && !isTwoEyedJack(cardNumber)) {
         return;
       }
-      // 4. Place chip on the board and discard card.
-      this.state.boardChips[boardLocation] = card.owner;
+      // 4. Modify chips on board and discard card.
+      if(isOneEyedJack(cardNumber)) {
+        this.state.boardChips[boardLocation] = '';
+      } else {
+        this.state.boardChips[boardLocation] = card.owner;
+      }
       card.discarded = true;
+      // 5. Draw a replacement card.
+      this.state.drawCard(card.owner);
+      // 6. Change current turn.
+      const players = Object.keys(this.state.players);
+      this.state.currentTurn = players[(players.indexOf(this.state.currentTurn) + 1) % players.length];
     }
   }
 

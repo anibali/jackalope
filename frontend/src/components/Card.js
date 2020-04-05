@@ -1,6 +1,7 @@
 import React from 'react';
 
 import getCardInfo from '../getCardInfo';
+import CardStyle from '../styles/Card.css';
 
 
 const SUIT_ENTITIES = {
@@ -10,11 +11,11 @@ const SUIT_ENTITIES = {
   clubs: '&clubs;',
 };
 
-const SUIT_COLOURS = {
-  spades: 'black',
-  hearts: 'red',
-  diamonds: 'red',
-  clubs: 'black',
+const SUIT_CLASSNAMES = {
+  spades: CardStyle.BlackCard,
+  hearts: CardStyle.RedCard,
+  diamonds: CardStyle.RedCard,
+  clubs: CardStyle.BlackCard,
 };
 
 const VALUE_CHARS = {
@@ -37,8 +38,9 @@ const VALUE_CHARS = {
 const Card = ({ cardNumber, chip }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
+  const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
   return (
-    <div style={{width: 40, height: 40, overflowWrap: 'break-word', border: '1px solid black', display: 'inline-block', color: SUIT_COLOURS[cardInfo.suit]}}>
+    <div className={classNames.join(' ')}>
       <span dangerouslySetInnerHTML={{__html: SUIT_ENTITIES[cardInfo.suit] || '&nbsp;'}} />
       {VALUE_CHARS[cardInfo.value]}
       <br />

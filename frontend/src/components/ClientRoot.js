@@ -5,6 +5,7 @@ import Backend from 'react-dnd-html5-backend';
 
 import Board from './Board';
 import Hand from './Hand';
+import TurnIndicator from './TurnIndicator';
 import GameClientContext from '../GameClientContext';
 import RoomContext from '../RoomContext';
 import { changeGameState } from '../reducers/gameState';
@@ -79,6 +80,7 @@ const ClientRoot = ({ store, gameClient }) => {
       <GameClientContext.Provider value={gameClient}>
         <RoomContext.Provider value={[room, setRoom]}>
           <h1>Jackalope</h1>
+          <TurnIndicator playerId={room ? room.sessionId : null} />
           <DndProvider backend={Backend}>
             <Board />
             <Hand />

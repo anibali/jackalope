@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 
 import RoomContext from '../RoomContext';
 import Card from './Card';
+import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 
 
 const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
@@ -14,7 +15,16 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
       isOver: !!mon.isOver(),
       canDrop: !!mon.canDrop(),
     }),
-    canDrop: item => (item.cardNumber % 52) === (cardNumber % 52),
+    canDrop: item => {
+      if(cardNumber < 0) {
+        // Can never place a chip on the joker squares.
+        return false;
+      }
+      if(chip) {
+        return isOneEyedJack(item.cardNumber);
+      }
+      return (item.cardNumber % 52) === (cardNumber % 52) || isTwoEyedJack(item.cardNumber);
+    }
   });
   return (
     <span ref={drop} style={{ backgroundColor: isOver ? 'yellow' : (canDrop ? 'blue' : 'inherit') }}>
