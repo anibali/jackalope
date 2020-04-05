@@ -1,6 +1,6 @@
 import { Room } from 'colyseus';
 
-import GameState from './GameState';
+import GameState from './state/GameState';
 import { isOneEyedJack, isTwoEyedJack } from './getCardInfo';
 
 
@@ -22,9 +22,10 @@ export default class extends Room {
   }
 
   onJoin(client) {
-    this.state.players[client.sessionId] = client.sessionId;
+    this.state.addPlayer(client.sessionId);
 
     if(Object.keys(this.state.players).length >= this.maxClients) {
+      // FIXME: Start turn on seat number 0.
       this.state.currentTurn = client.sessionId;
       // We've filled all player slots, so lock the room to prevent anyone else from joining.
       this.lock();
@@ -83,8 +84,7 @@ export default class extends Room {
       // 5. Draw a replacement card.
       this.state.drawCard(card.owner);
       // 6. Change current turn.
-      const players = Object.keys(this.state.players);
-      this.state.currentTurn = players[(players.indexOf(this.state.currentTurn) + 1) % players.length];
+      this.state.changeTurn();
     }
   }
 

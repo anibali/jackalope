@@ -5,6 +5,7 @@ import { useDrop } from 'react-dnd';
 import RoomContext from '../RoomContext';
 import Card from './Card';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
+import BoardStyle from '../styles/Board.css';
 
 
 const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
@@ -26,15 +27,21 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
       return (item.cardNumber % 52) === (cardNumber % 52) || isTwoEyedJack(item.cardNumber);
     }
   });
+  let className = '';
+  if(isOver) {
+    className = BoardStyle.DropHover;
+  } else if(canDrop) {
+    className = BoardStyle.DropValid;
+  }
   return (
-    <span ref={drop} style={{ backgroundColor: isOver ? 'yellow' : (canDrop ? 'blue' : 'inherit') }}>
+    <div ref={drop} className={className}>
       <Card cardNumber={cardNumber} chip={chip} />
-    </span>
+    </div>
   );
 };
 
 
-const Board = ({ boardLayout, boardChips }) => {
+const Board = ({ boardLayout, boardChips, players }) => {
   if(!boardLayout || !boardChips) {
     return null;
   }
@@ -53,11 +60,15 @@ const Board = ({ boardLayout, boardChips }) => {
     const tableRow = [];
     for(let col = 0; col < 10; ++col) {
       const boardLocation = row * 10 + col;
+      let chip = null;
+      if(boardChips[boardLocation] && players[boardChips[boardLocation]]) {
+        chip = players[boardChips[boardLocation]].seatNumber;
+      }
       tableRow.push(
         <td key={col}>
           <BoardSquare
             cardNumber={boardLayout[boardLocation]}
-            chip={boardChips[boardLocation]}
+            chip={chip}
             boardLocation={boardLocation}
             onPlayCard={onPlayCard}
           />
@@ -76,4 +87,5 @@ const Board = ({ boardLayout, boardChips }) => {
 export default connect(state => ({
   boardLayout: state.gameState.boardLayout,
   boardChips: state.gameState.boardChips,
+  players: state.gameState.players || {},
 }))(Board);

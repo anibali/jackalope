@@ -34,17 +34,23 @@ const VALUE_CHARS = {
   king: 'K',
 };
 
+const CHIP_CLASSNAMES = {
+  0: CardStyle.P1Chip,
+  1: CardStyle.P2Chip,
+};
+
 
 const Card = ({ cardNumber, chip }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
   const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
+  if(chip != null) {
+    classNames.push(CHIP_CLASSNAMES[chip]);
+  }
   return (
     <div className={classNames.join(' ')}>
       <span dangerouslySetInnerHTML={{__html: SUIT_ENTITIES[cardInfo.suit] || '&nbsp;'}} />
       {VALUE_CHARS[cardInfo.value]}
-      <br />
-      {(chip || '').substring(0, 3)}
     </div>
   );
 };

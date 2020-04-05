@@ -6,7 +6,7 @@ const TurnIndicator = ({ playerId, currentTurn }) => {
   if(currentTurn === playerId) {
     return <span>It&apos;s your turn, make a move!</span>;
   }
-  return <span>Waiting for your turn...</span>;
+  return <span>Waiting for opponent...</span>;
 };
 
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
+import Backend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 
 import Board from './Board';
 import Hand from './Hand';
@@ -81,7 +82,7 @@ const ClientRoot = ({ store, gameClient }) => {
         <RoomContext.Provider value={[room, setRoom]}>
           <h1>Jackalope</h1>
           <TurnIndicator playerId={room ? room.sessionId : null} />
-          <DndProvider backend={Backend}>
+          <DndProvider backend={Backend} options={HTML5toTouch}>
             <Board />
             <Hand />
           </DndProvider>

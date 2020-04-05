@@ -1,7 +1,11 @@
 import * as schema from '@colyseus/schema';
 import { shuffle } from 'd3-array';
 
+import Card from './Card';
+import Player from './Player';
 
+
+/* eslint-disable no-multi-spaces */
 const crossBoardLayout = [
   -1, 38, 34, 30, 26, 24, 28, 32, 36, -1,
   39, 51, 22, 18, 14, 12, 16, 20, 49, 37,
@@ -14,25 +18,7 @@ const crossBoardLayout = [
   37, 49, 20, 16, 12, 14, 18, 22, 51, 39,
   -1, 36, 32, 28, 24, 26, 30, 34, 38, -1,
 ];
-
-class Card extends schema.Schema {
-  constructor() {
-    super();
-    this.owner = '';
-    this.discarded = false;
-  }
-}
-
-schema.defineTypes(Card, {
-  owner: 'string',
-  discarded: 'boolean',
-  number: 'int32',
-});
-
-schema.filter(function(client) {
-  // Players can identify any discarded card, and any card in their own hand.
-  return this.discarded || this.owner === client.sessionId;
-})(Card.prototype, 'number');
+/* eslint-enable no-multi-spaces */
 
 class GameState extends schema.Schema {
   constructor() {
@@ -54,6 +40,11 @@ class GameState extends schema.Schema {
     }
     shuffle(deck);
     this.cards = new schema.ArraySchema(...deck);
+  }
+
+  addPlayer(playerId) {
+    const player = new Player(playerId, Object.keys(this.players).length);
+    this.players[playerId] = player;
   }
 
   drawCard(player) {
@@ -78,15 +69,21 @@ class GameState extends schema.Schema {
     }
     return null;
   }
+
+  changeTurn() {
+    const curSeatNumber = this.players[this.currentTurn].seatNumber;
+    const nextSeatNumber = (curSeatNumber + 1) % Object.keys(this.players).length;
+    const nextPlayer = Object.values(this.players).find(player => player.seatNumber === nextSeatNumber);
+    this.currentTurn = nextPlayer.id;
+  }
 }
 
 schema.defineTypes(GameState, {
   currentTurn: 'string',
-  players: { map: 'string' },
+  players: { map: Player },
   boardChips: ['string'], // TODO: Make int8 for better efficiency
   boardLayout: ['int32'],
   cards: [Card],
 });
 
 export default GameState;
-export { Card };
