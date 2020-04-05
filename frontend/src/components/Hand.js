@@ -1,14 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useDrag } from 'react-dnd';
 
 import Card from './Card';
+
+
+const HandCard = ({ cardNumber }) => {
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: 'card', cardNumber },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
+  return <span ref={drag}><Card cardNumber={cardNumber} /></span>;
+};
 
 
 const Hand = ({ hand }) => (
   <div>
     Your hand:
     <div>
-      {hand.map(card => <Card key={card.number} cardNumber={card.number} />)}
+      {hand.map(card => <HandCard key={card.number} cardNumber={card.number} />)}
     </div>
   </div>
 );

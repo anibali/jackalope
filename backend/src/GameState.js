@@ -41,7 +41,7 @@ class GameState extends schema.Schema {
 
     const boardChipsValues = [];
     for(let i = 0; i < 100; ++i) {
-      boardChipsValues.push(0);
+      boardChipsValues.push('');
     }
     this.boardChips = new schema.ArraySchema(...boardChipsValues);
     this.boardLayout = new schema.ArraySchema(...crossBoardLayout);
@@ -69,12 +69,21 @@ class GameState extends schema.Schema {
     }
     return card;
   }
+
+  getCardByNumber(cardNumber) {
+    for(let i = 0; i < this.cards.length; ++i) {
+      if(this.cards[i].number === cardNumber) {
+        return this.cards[i];
+      }
+    }
+    return null;
+  }
 }
 
 schema.defineTypes(GameState, {
   currentTurn: 'string',
   players: { map: 'string' },
-  boardChips: ['int8'],
+  boardChips: ['string'], // TODO: Make int8 for better efficiency
   boardLayout: ['int32'],
   cards: [Card],
 });

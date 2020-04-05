@@ -34,13 +34,15 @@ const VALUE_CHARS = {
 };
 
 
-const Card = ({ cardNumber }) => {
+const Card = ({ cardNumber, chip }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
   return (
     <div style={{width: 40, height: 40, overflowWrap: 'break-word', border: '1px solid black', display: 'inline-block', color: SUIT_COLOURS[cardInfo.suit]}}>
-      <span dangerouslySetInnerHTML={{__html: SUIT_ENTITIES[cardInfo.suit]}} />
+      <span dangerouslySetInnerHTML={{__html: SUIT_ENTITIES[cardInfo.suit] || '&nbsp;'}} />
       {VALUE_CHARS[cardInfo.value]}
+      <br />
+      {(chip || '').substring(0, 3)}
     </div>
   );
 };
