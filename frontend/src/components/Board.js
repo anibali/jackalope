@@ -21,7 +21,7 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
         // Can never place a chip on the joker squares.
         return false;
       }
-      if(chip) {
+      if(chip != null) {
         return isOneEyedJack(item.cardNumber);
       }
       return (item.cardNumber % 52) === (cardNumber % 52) || isTwoEyedJack(item.cardNumber);
