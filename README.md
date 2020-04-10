@@ -1,3 +1,10 @@
+**!!! Work in progress !!!**
+
+# Jackalope
+
+A browser-based multiplayer implementation of [One-Eyed Jack](https://www.pagat.com/misc/jack.html),
+also known as "Jack Foolery", "Jack Off", and "Sequence".
+
 ## Development
 
 ### Running
