@@ -5,22 +5,22 @@ import { useDrag } from 'react-dnd';
 import Card from './Card';
 
 
-const HandCard = ({ cardNumber }) => {
+const HandCard = ({ cardNumber, chip }) => {
   const [{ isDragging }, drag] = useDrag({
     item: { type: 'card', cardNumber },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
   });
-  return <span ref={drag}><Card cardNumber={cardNumber} /></span>;
+  return <span ref={drag}><Card cardNumber={cardNumber} chip={chip} /></span>;
 };
 
 
-const Hand = ({ hand }) => (
+const Hand = ({ hand, chip }) => (
   <div>
     Your hand:
     <div>
-      {hand.map(card => <HandCard key={card.number} cardNumber={card.number} />)}
+      {hand.map(card => <HandCard key={card.number} cardNumber={card.number} chip={chip} />)}
     </div>
   </div>
 );
@@ -28,6 +28,8 @@ const Hand = ({ hand }) => (
 
 export default connect(state => {
   const cards = state.gameState.cards || [];
-  const hand = cards.filter(card => card.owner === state.roomInfo.sessionId && !card.discarded);
-  return { hand };
+  const playerId = state.roomInfo.sessionId;
+  const hand = cards.filter(card => card.owner === playerId && !card.discarded);
+  const chip = state.gameState.players[playerId].seatNumber;
+  return { hand, chip };
 })(Hand);
