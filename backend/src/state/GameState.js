@@ -40,6 +40,7 @@ class GameState extends schema.Schema {
     }
     shuffle(deck);
     this.cards = new schema.ArraySchema(...deck);
+    this.terminated = false;
   }
 
   addPlayer(playerId) {
@@ -84,6 +85,7 @@ schema.defineTypes(GameState, {
   boardChips: ['string'], // TODO: Make int8 for better efficiency
   boardLayout: ['int32'],
   cards: [Card],
+  terminated: 'boolean',
 });
 
 export default GameState;

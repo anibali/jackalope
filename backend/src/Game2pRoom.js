@@ -90,6 +90,8 @@ export default class extends Room {
 
   onLeave(client) {
     console.log(`${client.id} left ${this.roomId}`);
+    // Any player leaving terminates the game.
+    this.state.terminated = true;
   }
 
   onDispose() {

@@ -1,91 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-multi-backend';
-import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
-
-import Board from './Board';
-import Hand from './Hand';
-import TurnIndicator from './TurnIndicator';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import GameClientContext from '../GameClientContext';
 import RoomContext from '../RoomContext';
-import { changeGameState } from '../reducers/gameState';
-import { setRoomInfo } from '../reducers/roomInfo';
-
-
-const toPlainData = (data) => {
-  if(Array.isArray(data)) {
-    return data.map(toPlainData);
-  }
-  if(data !== null && typeof data === 'object') {
-    const plainData = {};
-    Object.keys(data).forEach(key => {
-      plainData[key] = toPlainData(data[key]);
-    });
-    return plainData;
-  }
-  return data;
-};
-
-
-const currentQueryParams = () => {
-  const queryParts = window.location.search.substring(1).split('&');
-  const query = {};
-  queryParts.forEach(part => {
-    const pair = part.split('=');
-    const key = decodeURIComponent(pair[0]);
-    const value = decodeURIComponent(pair[1]);
-    query[key] = value;
-  });
-  return query;
-};
+import CreatePrivatePage from './CreatePrivatePage';
+import HomePage from './HomePage';
+import JoinPage from './JoinPage';
+import JoinPublicPage from './JoinPublicPage';
+import PlayingPage from './PlayingPage';
 
 
 const ClientRoot = ({ store, gameClient }) => {
   const [room, setRoom] = useState(null);
-  const [joiningRoom, setJoiningRoom] = useState(false);
-
-  useEffect(() => {
-    if(room == null && !joiningRoom) {
-      setJoiningRoom(true);
-
-      // const params = currentQueryParams();
-      // let joinPromise;
-      // if(params.roomId) {
-      //   joinPromise = gameClient.joinById(params.roomId);
-      // } else {
-      //   joinPromise = gameClient.create('game_2p_room', { private: true });
-      // }
-      const joinPromise = gameClient.joinOrCreate('game_2p_room', { private: false });
-
-      joinPromise.then(newRoom => {
-        store.dispatch(setRoomInfo({ sessionId: newRoom.sessionId, roomId: newRoom.id }));
-        window.history.replaceState({}, '', `?roomId=${newRoom.id}`);
-
-        newRoom.state.onChange = (changes) => {
-          changes.forEach(change => {
-            const value = toPlainData(change.value);
-            store.dispatch(changeGameState({ field: change.field, value }));
-          });
-        };
-
-        setRoom(newRoom);
-      }).catch(err => {
-        console.error('JOIN ERROR', err);
-      });
-    }
-  });
 
   return (
     <Provider store={store}>
       <GameClientContext.Provider value={gameClient}>
         <RoomContext.Provider value={[room, setRoom]}>
           <h1>Jackalope</h1>
-          <TurnIndicator playerId={room ? room.sessionId : null} />
-          <DndProvider backend={Backend} options={HTML5toTouch}>
-            <Board />
-            <Hand />
-          </DndProvider>
+          <Router>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route exact path="/playing">
+              <PlayingPage room={room} setRoom={setRoom} />
+            </Route>
+            <Route exact path="/join-public">
+              <JoinPublicPage gameClient={gameClient} />
+            </Route>
+            <Route exact path="/join/:roomId">
+              <JoinPage gameClient={gameClient} />
+            </Route>
+            <Route exact path="/create-private">
+              <CreatePrivatePage gameClient={gameClient} />
+            </Route>
+          </Router>
         </RoomContext.Provider>
       </GameClientContext.Provider>
     </Provider>
