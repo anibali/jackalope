@@ -23,7 +23,7 @@ const ClientRoot = ({ store, gameClient }) => {
               <HomePage />
             </Route>
             <Route exact path="/playing">
-              <PlayingPage room={room} setRoom={setRoom} />
+              <PlayingPage room={room} />
             </Route>
             <Route exact path="/join-public">
               <JoinPublicPage gameClient={gameClient} />

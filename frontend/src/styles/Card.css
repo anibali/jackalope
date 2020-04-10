@@ -1,3 +1,7 @@
+.CardWrapper {
+  display: inline-block;
+}
+
 .Card {
   width: 40px;
   height: 40px;

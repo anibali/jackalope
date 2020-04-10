@@ -45,46 +45,38 @@ export default class extends Room {
 
     if(message.type === 'play-card') {
       const { cardNumber, boardLocation } = message.payload;
-      // 1. Find card in game state.
+      // Find card in game state.
       const card = this.state.getCardByNumber(cardNumber);
       if(!card) {
         return;
       }
-      // 2. Verify that client.id matches the card's owner.
+      // Verify that client.id matches the card's owner.
       if(card.owner !== client.id) {
         return;
       }
-      // 3. Validate that the move is valid.
-      if(this.state.currentTurn !== card.owner) {
-        // Can't play when it's not your turn.
+      // Try to play the card.
+      if(!this.state.playCard(card, boardLocation)) {
         return;
       }
-      if(card.discarded) {
-        return;
-      }
-      const destNumber = this.state.boardLayout[boardLocation];
-      if(destNumber < 0) {
-        // Can't play onto a joker square.
-        return;
-      }
-      if(this.state.boardChips[boardLocation]) {
-        if(!isOneEyedJack(cardNumber)) {
-          return;
-        }
-      } else if((this.state.boardLayout[boardLocation] % 52 !== cardNumber % 52) && !isTwoEyedJack(cardNumber)) {
-        return;
-      }
-      // 4. Modify chips on board and discard card.
-      if(isOneEyedJack(cardNumber)) {
-        this.state.boardChips[boardLocation] = '';
-      } else {
-        this.state.boardChips[boardLocation] = card.owner;
-      }
-      card.discarded = true;
-      // 5. Draw a replacement card.
+      // Draw a replacement card.
       this.state.drawCard(card.owner);
-      // 6. Change current turn.
+      // Change current turn.
       this.state.changeTurn();
+    }
+
+    if(message.type === 'replace-dead-card') {
+      const { cardNumber } = message.payload;
+      // Find card in game state.
+      const card = this.state.getCardByNumber(cardNumber);
+      if(!card) {
+        return;
+      }
+      // Verify that client.id matches the card's owner.
+      if(card.owner !== client.id) {
+        return;
+      }
+      // Try to replace the card.
+      this.state.replaceDeadCard(card);
     }
   }
 

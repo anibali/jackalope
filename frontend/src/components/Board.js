@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback, useContext } from 'react';
 import { useDrop } from 'react-dnd';
-
-import RoomContext from '../RoomContext';
-import Card from './Card';
+import { connect } from 'react-redux';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
+import RoomContext from '../RoomContext';
 import BoardStyle from '../styles/Board.css';
+import CardStyle from '../styles/Card.css';
+import Card from './Card';
 
 
 const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
@@ -27,14 +27,14 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
       return (item.cardNumber % 52) === (cardNumber % 52) || isTwoEyedJack(item.cardNumber);
     }
   });
-  let className = '';
+  const classNames = [CardStyle.CardWrapper];
   if(isOver) {
-    className = BoardStyle.DropHover;
+    classNames.push(BoardStyle.DropHover);
   } else if(canDrop) {
-    className = BoardStyle.DropValid;
+    classNames.push(BoardStyle.DropValid);
   }
   return (
-    <div ref={drop} className={className}>
+    <div ref={drop} className={classNames.join(' ')}>
       <Card cardNumber={cardNumber} chip={chip} />
     </div>
   );
@@ -48,12 +48,15 @@ const Board = ({ boardLayout, boardChips, players }) => {
 
   const [room, setRoom] = useContext(RoomContext);
 
-  const onPlayCard = (cardNumber, boardLocation) => {
-    if(!room) {
-      return;
-    }
-    room.send({ type: 'play-card', payload: { cardNumber, boardLocation } });
-  };
+  const onPlayCard = useCallback(
+    (cardNumber, boardLocation) => {
+      if(!room) {
+        return;
+      }
+      room.send({ type: 'play-card', payload: { cardNumber, boardLocation } });
+    },
+    [room],
+  );
 
   const tableContent = [];
   for(let row = 0; row < 10; ++row) {

@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import AbstractJoinPage from './AbstractJoinPage';
 
 
 const JoinPublicPage = ({ gameClient }) => {
-  const joinFunction = useMemo(
+  const joinFunction = useCallback(
     () => gameClient.joinOrCreate('game_2p_room', { private: false }),
     [gameClient],
   );

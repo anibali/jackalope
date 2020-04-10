@@ -5,17 +5,17 @@ import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 import { connect } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import Board from './Board';
+import DiscardPile from './DiscardPile';
 import Hand from './Hand';
 import TurnIndicator from './TurnIndicator';
 
 
-const PlayingPage = ({ room, setRoom, players, terminated }) => {
+const PlayingPage = ({ room, players, terminated }) => {
   const history = useHistory();
 
   useEffect(() => {
     if(terminated && room != null) {
       room.leave();
-      setRoom(null);
     }
   });
 
@@ -44,6 +44,7 @@ const PlayingPage = ({ room, setRoom, players, terminated }) => {
       <TurnIndicator playerId={room ? room.sessionId : null} />
       <DndProvider backend={Backend} options={HTML5toTouch}>
         <Board />
+        <DiscardPile />
         <Hand />
       </DndProvider>
     </div>

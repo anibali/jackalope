@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import AbstractJoinPage from './AbstractJoinPage';
 
@@ -6,7 +6,7 @@ import AbstractJoinPage from './AbstractJoinPage';
 const JoinPage = ({ gameClient }) => {
   const { roomId } = useParams();
 
-  const joinFunction = useMemo(
+  const joinFunction = useCallback(
     () => gameClient.joinById(roomId),
     [gameClient, roomId],
   );
