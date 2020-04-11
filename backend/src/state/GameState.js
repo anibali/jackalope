@@ -42,6 +42,8 @@ class GameState extends schema.Schema {
     this.cards = new schema.ArraySchema(...deck);
     this.terminated = false;
     this.discardPile = new schema.ArraySchema();
+    this.currentTurn = '';
+    this.victor = '';
   }
 
   addPlayer(playerId) {
@@ -92,7 +94,8 @@ class GameState extends schema.Schema {
     if(isOneEyedJack(card.number) || isTwoEyedJack(card.number)) {
       return false;
     }
-    if(this.boardLayout.findIndex((e, i) => e % 52 === card.number % 52 && !this.boardChips[i]) >= 0) {
+    if(this.boardLayout.findIndex((e, i) => e % 52 === card.number % 52
+        && !this.boardChips[i]) >= 0) {
       return false;
     }
     // Replace the card.
@@ -121,7 +124,8 @@ class GameState extends schema.Schema {
       if(!isOneEyedJack(card.number)) {
         return false;
       }
-    } else if((this.boardLayout[boardLocation] % 52 !== card.number % 52) && !isTwoEyedJack(card.number)) {
+    } else if((this.boardLayout[boardLocation] % 52 !== card.number % 52)
+        && !isTwoEyedJack(card.number)) {
       return false;
     }
     // Modify chips on the board.
@@ -134,6 +138,85 @@ class GameState extends schema.Schema {
     this.discardCard(card);
     return true;
   }
+
+  countSequences(playerId) {
+    const width = 10;
+    const height = 10;
+    const seqLength = 5;
+    const seqRange = [...Array(seqLength).keys()];
+    let count = 0;
+
+    // Create another represenation of the board, where each square is a number.
+    // 0 = unoccupied by the player.
+    // 1 = occupied by the player (or wild/joker square).
+    // 2 = occupied by the player, but already used in a sequence.
+    const b = [];
+    for(let y = 0; y < height; ++y) {
+      const row = [];
+      for(let x = 0; x < width; ++x) {
+        const i = y * width + x;
+        let cell = 0;
+        if(this.boardLayout[i] === -1) {
+          cell = 1;
+        } else if(this.boardChips[i] === playerId) {
+          cell = 1;
+        }
+        row.push(cell);
+      }
+      b.push(row);
+    }
+
+    for(let y = 0; y < height; ++y) {
+      for(let x = 0; x < width; ++x) {
+        if(b[y][x] !== 0) {
+          const toCheck = [];
+
+          // Horizontal
+          if(x <= width - seqLength) {
+            toCheck.push(seqRange.map(i => [y, x + i]));
+          }
+
+          // Vertical
+          if(y <= height - seqLength) {
+            toCheck.push(seqRange.map(i => [y + i, x]));
+          }
+
+          // Diagonal
+          if(x <= width - seqLength && y <= height - seqLength) {
+            toCheck.push(seqRange.map(i => [y + i, x + i]));
+          }
+
+          // Check for sequences
+          count = toCheck.reduce((acc, coords) => {
+            let allowReuse = true;
+            let isSequence = true;
+
+            coords.forEach(([r, c]) => {
+              if(b[r][c] === 0) {
+                isSequence = false;
+              }
+              if(b[r][c] === 2) {
+                if(allowReuse) {
+                  allowReuse = false;
+                } else {
+                  isSequence = false;
+                }
+              }
+            });
+
+            if(isSequence) {
+              coords.forEach(([r, c]) => {
+                b[r][c] = 2;
+              });
+              return acc + 1;
+            }
+            return acc;
+          }, count);
+        }
+      }
+    }
+    return count;
+  }
 }
 
 schema.defineTypes(GameState, {
@@ -144,6 +227,7 @@ schema.defineTypes(GameState, {
   cards: [Card],
   terminated: 'boolean',
   discardPile: ['int32'],
+  victor: 'string',
 });
 
 export default GameState;

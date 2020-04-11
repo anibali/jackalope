@@ -6,7 +6,7 @@
     "node": true
   },
   "overrides": [{
-    "files": ["test/**"],
+    "files": ["**/test/test_*.js"],
     "env" : {
       "mocha": true
     }
@@ -23,6 +23,11 @@
     "function-paren-newline": 0,
     "import/extensions": 0,
     "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": [2, {
+        "devDependencies": [
+          "**/test/test_*.js"
+        ]
+    }],
     "indent": [2, 2, {"SwitchCase": 1}],
     "keyword-spacing": [2, {
       "overrides": {

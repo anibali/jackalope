@@ -58,10 +58,16 @@ export default class extends Room {
       if(!this.state.playCard(card, boardLocation)) {
         return;
       }
-      // Draw a replacement card.
-      this.state.drawCard(card.owner);
-      // Change current turn.
-      this.state.changeTurn();
+      // Check victory condition.
+      if(this.state.countSequences(card.owner) >= 2) {
+        this.state.victor = card.owner;
+        this.state.currentTurn = '';
+      } else {
+        // Draw a replacement card.
+        this.state.drawCard(card.owner);
+        // Change current turn.
+        this.state.changeTurn();
+      }
     }
 
     if(message.type === 'replace-dead-card') {

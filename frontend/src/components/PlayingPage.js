@@ -10,7 +10,7 @@ import Hand from './Hand';
 import TurnIndicator from './TurnIndicator';
 
 
-const PlayingPage = ({ room, players, terminated }) => {
+const PlayingPage = ({ room, players, terminated, victor }) => {
   const history = useHistory();
 
   useEffect(() => {
@@ -39,9 +39,20 @@ const PlayingPage = ({ room, players, terminated }) => {
     );
   }
 
+  let topMessage = null;
+  if(victor) {
+    if(victor === room.sessionId) {
+      topMessage = <div>You were victorious! Congratulations!</div>;
+    } else {
+      topMessage = <div>You were defeated, better luck next time.</div>;
+    }
+  } else {
+    topMessage = <TurnIndicator playerId={room ? room.sessionId : null} />;
+  }
+
   return (
     <div>
-      <TurnIndicator playerId={room ? room.sessionId : null} />
+      {topMessage}
       <DndProvider backend={Backend} options={HTML5toTouch}>
         <Board />
         <DiscardPile />
@@ -55,4 +66,5 @@ const PlayingPage = ({ room, players, terminated }) => {
 export default connect(state => ({
   players: state.gameState.players || {},
   terminated: state.gameState.terminated,
+  victor: state.gameState.victor,
 }))(PlayingPage);
