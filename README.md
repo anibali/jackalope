@@ -31,3 +31,4 @@ $ npm start
 * Limit dead card replacement to one per turn (can do this by checking that the
   active player does not have a card on top of the discard pile).
 * Add a quick way to reset the room and play again once a game finishes.
+* Randomise first player turn.

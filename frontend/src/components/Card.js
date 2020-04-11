@@ -35,17 +35,17 @@ const VALUE_CHARS = {
 };
 
 const CHIP_CLASSNAMES = {
-  0: CardStyle.P1Chip,
-  1: CardStyle.P2Chip,
+  0: 'P1Chip',
+  1: 'P2Chip',
 };
 
 
-const Card = ({ cardNumber, chip }) => {
+const Card = ({ cardNumber, chip, anim = false }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
   const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
   if(chip != null) {
-    classNames.push(CHIP_CLASSNAMES[chip]);
+    classNames.push(CardStyle[CHIP_CLASSNAMES[chip] + (anim ? 'Anim' : '')]);
   }
   return (
     <div className={classNames.join(' ')}>

@@ -35,11 +35,19 @@
 }
 
 .P1Chip {
+  background-color: #ccffcc;
+}
+
+.P1ChipAnim {
   animation: Chip-appear 500ms;
   background-color: #ccffcc;
 }
 
 .P2Chip {
+  background-color: #ffcccc;
+}
+
+.P2ChipAnim {
   animation: Chip-appear 500ms;
   background-color: #ffcccc;
 }

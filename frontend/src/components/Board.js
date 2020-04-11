@@ -35,7 +35,7 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
   }
   return (
     <div ref={drop} className={classNames.join(' ')}>
-      <Card cardNumber={cardNumber} chip={chip} />
+      <Card cardNumber={cardNumber} chip={chip} anim />
     </div>
   );
 };
