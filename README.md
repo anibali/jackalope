@@ -5,8 +5,12 @@
 A browser-based multiplayer implementation of [One-Eyed Jack](https://www.pagat.com/misc/jack.html),
 also known as "Jack Foolery", "Jack Off", and "Sequence".
 
+The commands to build and run the app in production mode are:
+
 ```
-$ npm install && npm start
+$ export NODE_ENV=production
+$ npm install
+$ npm start
 ```
 
 ## Development
