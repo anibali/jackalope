@@ -10,7 +10,12 @@ import ClientRoot from './components/ClientRoot';
 export default () => {
   const store = createStore();
 
-  const gameServerAddress = `${window.location.protocol.replace('http', 'ws')}//${window.location.hostname}:2567`;
+  let gameServerAddress;
+  if(process.env.NODE_ENV === 'production') {
+    gameServerAddress = `${window.location.protocol.replace('http', 'ws')}//${window.location.host}`;
+  } else {
+    gameServerAddress = `${window.location.protocol.replace('http', 'ws')}//${window.location.hostname}:2567`;
+  }
   const gameClient = new Colyseus.Client(gameServerAddress);
 
   // Mount our React root component in the DOM.

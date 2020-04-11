@@ -5,6 +5,10 @@
 A browser-based multiplayer implementation of [One-Eyed Jack](https://www.pagat.com/misc/jack.html),
 also known as "Jack Foolery", "Jack Off", and "Sequence".
 
+```
+$ npm install && npm start
+```
+
 ## Development
 
 ### Running
@@ -20,5 +24,6 @@ also known as "Jack Foolery", "Jack Off", and "Sequence".
 * More efficient representation of `boardChips`.
 * Put `room` in the store and get rid of the room context and roomInfo.
 * Add current turn check to canDrop.
-* Limit dead card replacement to one per turn.
+* Limit dead card replacement to one per turn (can do this by checking that the
+  active player does not have a card on top of the discard pile).
 * Add a quick way to reset the room and play again once a game finishes.

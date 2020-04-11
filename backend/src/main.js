@@ -1,5 +1,7 @@
 import { ArgumentParser } from 'argparse';
-
+import cors from 'cors';
+import express from 'express';
+import path from 'path';
 import createGameServer from './createGameServer';
 
 
@@ -10,7 +12,7 @@ const parseArgs = (argv) => {
 
   parser.addArgument(['-p', '--port'], {
     help: 'server port',
-    defaultValue: 2567,
+    defaultValue: process.env.PORT || 2567,
   });
 
   return parser.parseArgs(argv.slice(2));
@@ -21,8 +23,14 @@ const parseArgs = (argv) => {
 export default (argv) => {
   const args = parseArgs(argv);
 
-  const gameServer = createGameServer();
+  const app = express();
+
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.static(path.resolve(__dirname, '..', '..', 'frontend', 'dist')));
+
+  const gameServer = createGameServer(app);
   gameServer.listen(args.port).then(() => {
-    console.log(`Listening on ws://localhost:${args.port}`);
+    console.log(`Game server listening on ws://localhost:${args.port}`);
   });
 };
