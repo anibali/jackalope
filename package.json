@@ -5,8 +5,10 @@
   "private": true,
   "description": "",
   "scripts": {
+    "prebuild": "npm install --only=dev --prefix ./frontend",
     "build": "npm run build --prefix ./frontend",
-    "install": "npm install --prefix ./backend && npm install --prefix ./frontend && npm run build",
+    "install": "npm install --prefix ./backend && npm install --prefix ./frontend",
+    "postinstall": "npm run build",
     "start": "npm start --prefix ./backend",
     "lint": "eslint */src"
   },
