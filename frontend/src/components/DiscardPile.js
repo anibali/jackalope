@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
+import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 import RoomContext from '../RoomContext';
 import BoardStyle from '../styles/Board.css';
 import CardStyle from '../styles/Card.css';
@@ -28,6 +29,9 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips }) => {
       canDrop: !!mon.canDrop(),
     }),
     canDrop: item => {
+      if(isOneEyedJack(item.cardNumber) || isTwoEyedJack(item.cardNumber)) {
+        return false;
+      }
       if(boardLayout.findIndex((e, i) => e % 52 === item.cardNumber % 52 && !boardChips[i]) >= 0) {
         return false;
       }

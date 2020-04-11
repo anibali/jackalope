@@ -42,9 +42,9 @@ const PlayingPage = ({ room, players, terminated, victor }) => {
   let topMessage = null;
   if(victor) {
     if(victor === room.sessionId) {
-      topMessage = <div>You were victorious! Congratulations!</div>;
+      topMessage = <div>You are victorious! Congratulations!</div>;
     } else {
-      topMessage = <div>You were defeated, better luck next time.</div>;
+      topMessage = <div>You have been defeated, better luck next time.</div>;
     }
   } else {
     topMessage = <TurnIndicator playerId={room ? room.sessionId : null} />;
