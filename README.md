@@ -22,8 +22,6 @@ $ npm start
 
 ### TODO
 
-* Button for copying room link to clipboard
-  (https://www.w3schools.com/howto/howto_js_copy_clipboard.asp).
 * More efficient representation of `boardChips`.
 * Put `room` in the store and get rid of the room context and roomInfo.
 * Add current turn check to canDrop.

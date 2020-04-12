@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
@@ -8,6 +8,29 @@ import Board from './Board';
 import DiscardPile from './DiscardPile';
 import Hand from './Hand';
 import TurnIndicator from './TurnIndicator';
+
+
+const EasyCopyText = ({ text }) => {
+  const ref = useRef();
+
+  const copyToClipboard = useCallback(
+    () => {
+      // Select the text.
+      ref.current.select();
+      ref.current.setSelectionRange(0, 99999);
+      // Copy selection to clipboard.
+      document.execCommand('copy');
+    },
+    [ref],
+  );
+
+  return (
+    <div>
+      <input type="text" value={text} ref={ref} />
+      <button type="button" onClick={copyToClipboard}>Copy link</button>
+    </div>
+  );
+};
 
 
 const PlayingPage = ({ room, players, terminated, victor }) => {
@@ -34,7 +57,7 @@ const PlayingPage = ({ room, players, terminated, victor }) => {
         <p>
           You can invite another person to play by sharing the following link:
         </p>
-        <pre>{urlString}</pre>
+        <EasyCopyText text={urlString} />
       </div>
     );
   }
