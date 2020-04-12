@@ -90,6 +90,13 @@ class GameState extends schema.Schema {
     if(card.discarded) {
       return false;
     }
+    // Only allow one dead card replacement per turn.
+    if(this.discardPile.length > 0) {
+      const lastDiscard = this.getCardByNumber(this.discardPile[this.discardPile.length - 1]);
+      if(lastDiscard.owner === card.owner) {
+        return false;
+      }
+    }
     // Verify that card is dead.
     if(isOneEyedJack(card.number) || isTwoEyedJack(card.number)) {
       return false;
@@ -101,7 +108,6 @@ class GameState extends schema.Schema {
     // Replace the card.
     this.discardCard(card);
     this.drawCard(card.owner);
-    // TODO: Prevent this action from occurring more than once a turn.
     return true;
   }
 

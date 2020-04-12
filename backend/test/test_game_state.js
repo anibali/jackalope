@@ -24,6 +24,33 @@ describe('GameState', () => {
     });
   });
 
+  describe('#replaceDeadCard()', () => {
+    context('when card is dead but player has already discarded', () => {
+      it('should abort the action', () => {
+        const state = new GameState();
+        state.addPlayer('a');
+        for(let i = 0; i < 7; ++i) {
+          state.drawCard('a');
+        }
+        state.boardChips = parseBoardChips([
+          '.aaaaaaaa.',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          'aaaaaaaaaa',
+          '.aaaaaaaa.',
+        ]);
+        state.currentTurn = 'a';
+        assert.isTrue(state.replaceDeadCard(state.cards[0]));
+        assert.isFalse(state.replaceDeadCard(state.cards[1]));
+      });
+    });
+  });
+
   describe('#countSequences()', () => {
     context('when the board is empty', () => {
       const state = new GameState();

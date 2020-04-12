@@ -8,7 +8,7 @@ import CardStyle from '../styles/Card.css';
 import Card from './Card';
 
 
-const DiscardPile = ({ discardedCards, boardLayout, boardChips }) => {
+const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber }) => {
   const [room, setRoom] = useContext(RoomContext);
 
   const onDiscardCard = useCallback(
@@ -29,6 +29,12 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips }) => {
       canDrop: !!mon.canDrop(),
     }),
     canDrop: item => {
+      if(discardedCards.length > 0) {
+        const lastDiscard = discardedCards[discardedCards.length - 1];
+        if(lastDiscard.owner === getCardByNumber(item.cardNumber).owner) {
+          return false;
+        }
+      }
       if(isOneEyedJack(item.cardNumber) || isTwoEyedJack(item.cardNumber)) {
         return false;
       }
@@ -61,4 +67,5 @@ export default connect(state => ({
   discardedCards: (state.gameState.discardPile || []).map(n => state.gameState.cards.find(c => c.number === n)),
   boardLayout: state.gameState.boardLayout,
   boardChips: state.gameState.boardChips,
+  getCardByNumber: n => state.gameState.cards.find(c => c.number === n),
 }))(DiscardPile);
