@@ -71,8 +71,10 @@ export default connect(
       };
       room.onLeave(() => {
         dispatch(clearGameState());
+        dispatch(setRoomInfo({ sessionId: null, roomId: null }));
         setRoom(null);
       });
+      dispatch(setRoomInfo({ sessionId: room.sessionId, roomId: room.id }));
       setRoom(room);
     },
   })

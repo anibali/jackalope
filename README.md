@@ -22,7 +22,7 @@ $ npm start
 
 ### TODO
 
-* More efficient representation of `boardChips`.
-* Put `room` in the store and get rid of the room context and roomInfo.
-* Add current turn check to canDrop.
 * Add a quick way to reset the room and play again once a game finishes.
+* More efficient representation of `boardChips`.
+* Add current turn check to canDrop (maybe---it's kind of nice to be able to
+  check moves when it's not your turn).

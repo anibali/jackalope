@@ -26,7 +26,7 @@ const EasyCopyText = ({ text }) => {
 
   return (
     <div>
-      <input type="text" value={text} ref={ref} />
+      <input type="text" value={text} ref={ref} readOnly />
       <button type="button" onClick={copyToClipboard}>Copy link</button>
     </div>
   );
