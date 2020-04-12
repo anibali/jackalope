@@ -24,9 +24,10 @@ export default class extends Room {
   onJoin(client) {
     this.state.addPlayer(client.sessionId);
 
-    if(Object.keys(this.state.players).length >= this.maxClients) {
-      // FIXME: Start turn on seat number 0.
-      this.state.currentTurn = client.sessionId;
+    const curPlayers = Object.keys(this.state.players);
+    if(curPlayers.length >= this.maxClients) {
+      const firstPlayerIndex = Math.floor(Math.random() * curPlayers.length);
+      this.state.currentTurn = curPlayers[firstPlayerIndex];
       // We've filled all player slots, so lock the room to prevent anyone else from joining.
       this.lock();
       // Draw player hands.

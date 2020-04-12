@@ -28,4 +28,3 @@ $ npm start
 * Put `room` in the store and get rid of the room context and roomInfo.
 * Add current turn check to canDrop.
 * Add a quick way to reset the room and play again once a game finishes.
-* Randomise first player turn.
