@@ -177,19 +177,24 @@ class GameState extends schema.Schema {
         if(b[y][x] !== 0) {
           const toCheck = [];
 
-          // Horizontal
+          // Horizontal -
           if(x <= width - seqLength) {
             toCheck.push(seqRange.map(i => [y, x + i]));
           }
 
-          // Vertical
+          // Vertical |
           if(y <= height - seqLength) {
             toCheck.push(seqRange.map(i => [y + i, x]));
           }
 
-          // Diagonal
+          // Backward diagonal \
           if(x <= width - seqLength && y <= height - seqLength) {
             toCheck.push(seqRange.map(i => [y + i, x + i]));
+          }
+
+          // Forward diagonal /
+          if(x >= seqLength - 1 && y <= height - seqLength) {
+            toCheck.push(seqRange.map(i => [y + i, x - i]));
           }
 
           // Check for sequences

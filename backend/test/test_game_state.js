@@ -259,5 +259,27 @@ describe('GameState', () => {
         assert.equal(state.countSequences('a'), 2);
       });
     });
+
+    context('when there are two 5-chip diagonal sequences with different slopes', () => {
+      const state = new GameState();
+      state.addPlayer('a');
+      state.addPlayer('b');
+      state.boardChips = parseBoardChips([
+        '....aa..a.',
+        '.......aa.',
+        '....aaba..',
+        '..a...aa..',
+        '.b.a.a.ab.',
+        '....a..ba.',
+        'a..bbb..ba',
+        'bb.b.abb.a',
+        '.b.b.bb...',
+        '....b...b.',
+      ]);
+
+      it('should return 2', () => {
+        assert.equal(state.countSequences('a'), 2);
+      });
+    });
   });
 });
