@@ -3,10 +3,6 @@
 }
 
 .Card {
-  width: 6vh;
-  height: 6vh;
-  line-height: 6vh;
-  font-size: 3vh;
   border: 1px solid #666666;
   display: inline-block;
   background-color: #fefefe;
@@ -14,6 +10,24 @@
   text-align: center;
   user-select: none;
   cursor: pointer;
+}
+
+@media(orientation: landscape) {
+  .Card {
+    width: 7vh;
+    height: 7vh;
+    line-height: 7vh;
+    font-size: 3vh;
+  }
+}
+
+@media(orientation: portrait) {
+  .Card {
+    width: 7vw;
+    height: 7vw;
+    line-height: 7vw;
+    font-size: 3vw;
+  }
 }
 
 .BlackCard {
