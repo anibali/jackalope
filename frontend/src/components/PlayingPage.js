@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { Button, Col, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
@@ -25,10 +26,17 @@ const EasyCopyText = ({ text }) => {
   );
 
   return (
-    <div>
-      <input type="text" value={text} ref={ref} readOnly />
-      <button type="button" onClick={copyToClipboard}>Copy link</button>
-    </div>
+    <InputGroup className="mb-3">
+      <FormControl
+        aria-label="Game room link"
+        ref={ref}
+        value={text}
+        readOnly
+      />
+      <InputGroup.Append>
+        <Button variant="secondary" onClick={copyToClipboard}>Copy</Button>
+      </InputGroup.Append>
+    </InputGroup>
   );
 };
 
@@ -78,8 +86,11 @@ const PlayingPage = ({ room, players, terminated, victor }) => {
       {topMessage}
       <DndProvider backend={Backend} options={HTML5toTouch}>
         <Board />
-        <DiscardPile />
-        <Hand />
+        <Row>
+          <Col xs="auto"><Hand /></Col>
+          <Col xs="auto"><DiscardPile /></Col>
+          <Col />
+        </Row>
       </DndProvider>
     </div>
   );

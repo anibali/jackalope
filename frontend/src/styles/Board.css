@@ -1,8 +1,7 @@
 .DropHover {
-  box-shadow: 0 0 3px green;
+  box-shadow: 0 0 1.5px 1.5px magenta;
 }
 
-
 .DropValid {
-  box-shadow: 0 0 3px blue;
+  box-shadow: 0 0 1.5px 1.5px purple;
 }

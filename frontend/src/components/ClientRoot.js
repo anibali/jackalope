@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import RoomContext from '../RoomContext';
@@ -15,24 +16,25 @@ const ClientRoot = ({ store, gameClient }) => {
   return (
     <Provider store={store}>
       <RoomContext.Provider value={[room, setRoom]}>
-        <h1>Jackalope</h1>
-        <Router>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route exact path="/playing">
-            <PlayingPage room={room} />
-          </Route>
-          <Route exact path="/join-public">
-            <JoinPublicPage gameClient={gameClient} />
-          </Route>
-          <Route exact path="/join/:roomId">
-            <JoinPage gameClient={gameClient} />
-          </Route>
-          <Route exact path="/create-private">
-            <CreatePrivatePage gameClient={gameClient} />
-          </Route>
-        </Router>
+        <Container className="mt-2" fluid="md">
+          <Router>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route exact path="/playing">
+              <PlayingPage room={room} />
+            </Route>
+            <Route exact path="/join-public">
+              <JoinPublicPage gameClient={gameClient} />
+            </Route>
+            <Route exact path="/join/:roomId">
+              <JoinPage gameClient={gameClient} />
+            </Route>
+            <Route exact path="/create-private">
+              <CreatePrivatePage gameClient={gameClient} />
+            </Route>
+          </Router>
+        </Container>
       </RoomContext.Provider>
     </Provider>
   );

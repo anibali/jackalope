@@ -54,7 +54,8 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber 
   }
   return (
     <div>
-      Discard:&nbsp;
+      Discard:
+      <br />
       <div ref={drop} className={classNames.join(' ')}>
         <Card cardNumber={cardNumber} />
       </div>

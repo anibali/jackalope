@@ -3,10 +3,11 @@
 }
 
 .Card {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  border: 1px solid black;
+  width: 6vh;
+  height: 6vh;
+  line-height: 6vh;
+  font-size: 3vh;
+  border: 1px solid #666666;
   display: inline-block;
   background-color: #fefefe;
   border-radius: 2px;
@@ -35,12 +36,12 @@
 }
 
 .P1Chip {
-  background-color: #ccffcc;
+  background-color: #ccccff;
 }
 
 .P1ChipAnim {
   animation: Chip-appear 500ms;
-  background-color: #ccffcc;
+  background-color: #ccccff;
 }
 
 .P2Chip {

@@ -91,6 +91,7 @@ const Hand = ({ hand, chip }) => {
   return (
     <div>
       Your hand:
+      <br />
       <div>
         {sortedHand.map(n => <HandCard key={n} cardNumber={n} chip={chip} index={handOrder.indexOf(n)} moveCard={moveCard} />)}
       </div>
