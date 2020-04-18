@@ -3,7 +3,6 @@ import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 import RoomContext from '../RoomContext';
-import BoardStyle from '../styles/Board.css';
 import CardStyle from '../styles/Card.css';
 import Card from './Card';
 
@@ -27,15 +26,15 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
       return (item.cardNumber % 52) === (cardNumber % 52) || isTwoEyedJack(item.cardNumber);
     }
   });
-  const classNames = [CardStyle.CardWrapper];
+  let highlight = '';
   if(isOver) {
-    classNames.push(BoardStyle.DropHover);
+    highlight = 'primary';
   } else if(canDrop) {
-    classNames.push(BoardStyle.DropValid);
+    highlight = 'secondary';
   }
   return (
-    <div ref={drop} className={classNames.join(' ')}>
-      <Card cardNumber={cardNumber} chip={chip} anim />
+    <div ref={drop} className={CardStyle.CardWrapper}>
+      <Card cardNumber={cardNumber} chip={chip} highlight={highlight} anim />
     </div>
   );
 };

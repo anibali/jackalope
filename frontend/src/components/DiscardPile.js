@@ -3,7 +3,6 @@ import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 import RoomContext from '../RoomContext';
-import BoardStyle from '../styles/Board.css';
 import CardStyle from '../styles/Card.css';
 import Card from './Card';
 
@@ -46,18 +45,18 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber 
   });
   const card = discardedCards[discardedCards.length - 1];
   const cardNumber = card ? card.number : -1;
-  const classNames = [CardStyle.CardWrapper];
+  let highlight = '';
   if(isOver) {
-    classNames.push(BoardStyle.DropHover);
+    highlight = 'primary';
   } else if(canDrop) {
-    classNames.push(BoardStyle.DropValid);
+    highlight = 'secondary';
   }
   return (
     <div>
       Discard:
       <br />
-      <div ref={drop} className={classNames.join(' ')}>
-        <Card cardNumber={cardNumber} />
+      <div ref={drop} className={CardStyle.CardWrapper}>
+        <Card cardNumber={cardNumber} highlight={highlight} />
       </div>
     </div>
   );

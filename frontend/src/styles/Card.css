@@ -3,7 +3,7 @@
 }
 
 .Card {
-  border: 1px solid #666666;
+  border: 1px solid black;
   display: inline-block;
   background-color: #fefefe;
   border-radius: 2px;
@@ -30,12 +30,20 @@
   }
 }
 
-.BlackCard {
+.SpadesCard {
   color: black;
 }
 
-.RedCard {
+.HeartsCard {
   color: red;
+}
+
+.DiamondsCard {
+  color: blue;
+}
+
+.ClubsCard {
+  color: green;
 }
 
 @keyframes Chip-appear {
@@ -65,4 +73,14 @@
 .P2ChipAnim {
   animation: Chip-appear 500ms;
   background-color: #ffcccc;
+}
+
+.CardHighlightPrimary {
+  box-shadow: 0 0 1.5px 1.5px magenta;
+  border: 1px solid magenta;
+}
+
+.CardHighlightSecondary {
+  box-shadow: 0 0 1.5px 1.5px cyan;
+  border: 1px solid cyan;
 }

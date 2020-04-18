@@ -12,10 +12,10 @@ const SUIT_ENTITIES = {
 };
 
 const SUIT_CLASSNAMES = {
-  spades: CardStyle.BlackCard,
-  hearts: CardStyle.RedCard,
-  diamonds: CardStyle.RedCard,
-  clubs: CardStyle.BlackCard,
+  spades: CardStyle.SpadesCard,
+  hearts: CardStyle.HeartsCard,
+  diamonds: CardStyle.DiamondsCard,
+  clubs: CardStyle.ClubsCard,
 };
 
 const VALUE_CHARS = {
@@ -39,13 +39,21 @@ const CHIP_CLASSNAMES = {
   1: 'P2Chip',
 };
 
+const HIGHLIGHT_CLASSNAMES = {
+  primary: 'CardHighlightPrimary',
+  secondary: 'CardHighlightSecondary',
+};
 
-const Card = ({ cardNumber, chip, anim = false }) => {
+
+const Card = ({ cardNumber, chip, highlight = '', anim = false }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
   const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
   if(chip != null) {
     classNames.push(CardStyle[CHIP_CLASSNAMES[chip] + (anim ? 'Anim' : '')]);
+  }
+  if(Object.prototype.hasOwnProperty.call(HIGHLIGHT_CLASSNAMES, highlight)) {
+    classNames.push(CardStyle[HIGHLIGHT_CLASSNAMES[highlight]]);
   }
   return (
     <div className={classNames.join(' ')}>
