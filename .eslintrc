@@ -25,7 +25,8 @@
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": [2, {
         "devDependencies": [
-          "**/test/test_*.js"
+          "**/test/test_*.js",
+          "**/stories/*.stories.js"
         ]
     }],
     "indent": [2, 2, {"SwitchCase": 1}],

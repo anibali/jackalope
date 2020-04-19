@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
+import HandStyles from '../styles/Hand.css';
 import Card from './Card';
 
 
@@ -92,7 +93,7 @@ const Hand = ({ hand, chip }) => {
     <div>
       Your hand:
       <br />
-      <div>
+      <div className={HandStyles.HandContainer}>
         {sortedHand.map(n => <HandCard key={n} cardNumber={n} chip={chip} index={handOrder.indexOf(n)} moveCard={moveCard} />)}
       </div>
     </div>

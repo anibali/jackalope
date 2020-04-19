@@ -1,10 +1,5 @@
-.CardWrapper {
-  display: inline-block;
-}
-
 .Card {
   border: 1px solid black;
-  display: inline-block;
   background-color: #fefefe;
   border-radius: 2px;
   text-align: center;
@@ -14,18 +9,18 @@
 
 @media(orientation: landscape) {
   .Card {
-    width: 7vh;
-    height: 7vh;
-    line-height: 7vh;
+    width: 7.5vh;
+    height: 7.5vh;
+    line-height: 7.5vh;
     font-size: 3vh;
   }
 }
 
 @media(orientation: portrait) {
   .Card {
-    width: 7vw;
-    height: 7vw;
-    line-height: 7vw;
+    width: 7.5vw;
+    height: 7.5vw;
+    line-height: 7.5vw;
     font-size: 3vw;
   }
 }

@@ -3,7 +3,6 @@ import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 import RoomContext from '../RoomContext';
-import CardStyle from '../styles/Card.css';
 import Card from './Card';
 
 
@@ -55,7 +54,7 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber 
     <div>
       Discard:
       <br />
-      <div ref={drop} className={CardStyle.CardWrapper}>
+      <div ref={drop}>
         <Card cardNumber={cardNumber} highlight={highlight} />
       </div>
     </div>

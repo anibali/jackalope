@@ -3,7 +3,7 @@ import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { isOneEyedJack, isTwoEyedJack } from '../getCardInfo';
 import RoomContext from '../RoomContext';
-import CardStyle from '../styles/Card.css';
+import BoardStyle from '../styles/Board.css';
 import Card from './Card';
 
 
@@ -33,14 +33,14 @@ const BoardSquare = ({ cardNumber, chip, superChip, boardLocation, onPlayCard })
     highlight = 'secondary';
   }
   return (
-    <div ref={drop} className={CardStyle.CardWrapper}>
+    <div ref={drop}>
       <Card cardNumber={cardNumber} chip={chip} superChip={superChip} highlight={highlight} anim />
     </div>
   );
 };
 
 
-const Board = ({ boardLayout, boardChips, players }) => {
+const PureBoard = ({ boardLayout, boardChips, players }) => {
   if(!boardLayout || !boardChips) {
     return null;
   }
@@ -69,7 +69,7 @@ const Board = ({ boardLayout, boardChips, players }) => {
         superChip = players[boardChips[boardLocation]].sequenceSquares.includes(boardLocation);
       }
       tableRow.push(
-        <td key={col}>
+        <td key={col} className={BoardStyle.BoardCell}>
           <BoardSquare
             cardNumber={boardLayout[boardLocation]}
             chip={chip}
@@ -89,8 +89,10 @@ const Board = ({ boardLayout, boardChips, players }) => {
 };
 
 
+export { PureBoard };
+
 export default connect(state => ({
   boardLayout: state.gameState.boardLayout,
   boardChips: state.gameState.boardChips,
   players: state.gameState.players || {},
-}))(Board);
+}))(PureBoard);
