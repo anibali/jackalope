@@ -46,6 +46,7 @@ export default class extends Room {
 
     if(message.type === 'play-card') {
       const { cardNumber, boardLocation } = message.payload;
+      const oldChipOwner = this.state.boardChips[boardLocation];
       // Find card in game state.
       const card = this.state.getCardByNumber(cardNumber);
       if(!card) {
@@ -59,8 +60,14 @@ export default class extends Room {
       if(!this.state.playCard(card, boardLocation)) {
         return;
       }
+      // If a one-eyed jack was played, recalculate sequences for player owning removed chip.
+      if(isOneEyedJack(cardNumber)) {
+        this.state.players[oldChipOwner].setSequences(this.state.findSequences(oldChipOwner));
+      }
       // Check victory condition.
-      if(this.state.countSequences(card.owner) >= 2) {
+      const sequences = this.state.findSequences(card.owner);
+      this.state.players[card.owner].setSequences(sequences);
+      if(sequences.length >= 2) {
         this.state.victor = card.owner;
         this.state.currentTurn = '';
       } else {

@@ -145,12 +145,12 @@ class GameState extends schema.Schema {
     return true;
   }
 
-  countSequences(playerId) {
+  findSequences(playerId) {
     const width = 10;
     const height = 10;
     const seqLength = 5;
     const seqRange = [...Array(seqLength).keys()];
-    let count = 0;
+    const sequences = [];
 
     // Create another represenation of the board, where each square is a number.
     // 0 = unoccupied by the player.
@@ -198,7 +198,7 @@ class GameState extends schema.Schema {
           }
 
           // Check for sequences
-          count = toCheck.reduce((acc, coords) => {
+          toCheck.forEach(coords => {
             let allowReuse = true;
             let isSequence = true;
 
@@ -219,14 +219,17 @@ class GameState extends schema.Schema {
               coords.forEach(([r, c]) => {
                 b[r][c] = 2;
               });
-              return acc + 1;
+              sequences.push(coords.map(([r, c]) => r * width + c));
             }
-            return acc;
-          }, count);
+          });
         }
       }
     }
-    return count;
+    return sequences;
+  }
+
+  countSequences(playerId) {
+    return this.findSequences(playerId).length;
   }
 }
 

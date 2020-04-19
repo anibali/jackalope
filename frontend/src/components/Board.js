@@ -7,7 +7,7 @@ import CardStyle from '../styles/Card.css';
 import Card from './Card';
 
 
-const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
+const BoardSquare = ({ cardNumber, chip, superChip, boardLocation, onPlayCard }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'card',
     drop: item => onPlayCard(item.cardNumber, boardLocation),
@@ -34,7 +34,7 @@ const BoardSquare = ({ cardNumber, chip, boardLocation, onPlayCard }) => {
   }
   return (
     <div ref={drop} className={CardStyle.CardWrapper}>
-      <Card cardNumber={cardNumber} chip={chip} highlight={highlight} anim />
+      <Card cardNumber={cardNumber} chip={chip} superChip={superChip} highlight={highlight} anim />
     </div>
   );
 };
@@ -63,14 +63,17 @@ const Board = ({ boardLayout, boardChips, players }) => {
     for(let col = 0; col < 10; ++col) {
       const boardLocation = row * 10 + col;
       let chip = null;
+      let superChip = false;
       if(boardChips[boardLocation] && players[boardChips[boardLocation]]) {
         chip = players[boardChips[boardLocation]].seatNumber;
+        superChip = players[boardChips[boardLocation]].sequenceSquares.includes(boardLocation);
       }
       tableRow.push(
         <td key={col}>
           <BoardSquare
             cardNumber={boardLayout[boardLocation]}
             chip={chip}
+            superChip={superChip}
             boardLocation={boardLocation}
             onPlayCard={onPlayCard}
           />

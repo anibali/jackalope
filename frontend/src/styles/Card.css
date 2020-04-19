@@ -66,6 +66,12 @@
   background-color: #ccccff;
 }
 
+.P1ChipSuper {
+  animation: Chip-appear 500ms;
+  background-color: #ccccff;
+  box-shadow: inset 0 0 4px 5px #5555fc;
+}
+
 .P2Chip {
   background-color: #ffcccc;
 }
@@ -75,12 +81,16 @@
   background-color: #ffcccc;
 }
 
+.P2ChipSuper {
+  animation: Chip-appear 500ms;
+  background-color: #ffcccc;
+  box-shadow: inset 0 0 4px 5px #fc5555;
+}
+
 .CardHighlightPrimary {
-  box-shadow: 0 0 1.5px 1.5px magenta;
-  border: 1px solid magenta;
+  box-shadow: inset 0 0 2px 3px magenta;
 }
 
 .CardHighlightSecondary {
-  box-shadow: 0 0 1.5px 1.5px cyan;
-  border: 1px solid cyan;
+  box-shadow: inset 0 0 2px 3px orange;
 }

@@ -45,12 +45,18 @@ const HIGHLIGHT_CLASSNAMES = {
 };
 
 
-const Card = ({ cardNumber, chip, highlight = '', anim = false }) => {
+const Card = ({ cardNumber, chip, superChip, highlight = '', anim = false }) => {
   // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
   const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
   if(chip != null) {
-    classNames.push(CardStyle[CHIP_CLASSNAMES[chip] + (anim ? 'Anim' : '')]);
+    let suffix = '';
+    if(superChip) {
+      suffix = 'Super';
+    } else if(anim) {
+      suffix = 'Anim';
+    }
+    classNames.push(CardStyle[CHIP_CLASSNAMES[chip] + suffix]);
   }
   if(Object.prototype.hasOwnProperty.call(HIGHLIGHT_CLASSNAMES, highlight)) {
     classNames.push(CardStyle[HIGHLIGHT_CLASSNAMES[highlight]]);
