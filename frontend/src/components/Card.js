@@ -46,9 +46,19 @@ const HIGHLIGHT_CLASSNAMES = {
 
 
 const Card = ({ cardNumber, chip, superChip, highlight = '', anim = false }) => {
-  // TODO: Explicitly handle cardNumber = -1 (the "joker")
   const cardInfo = getCardInfo(cardNumber);
-  const classNames = [CardStyle.Card, SUIT_CLASSNAMES[cardInfo.suit]];
+  let entity = '&nbsp';
+  let suitClassname = '';
+  if(cardNumber === -1) {
+    // Joker
+    entity = '&#9733;';
+    suitClassname = CardStyle.JokerCard;
+  } else if(cardInfo.suit) {
+    // Normal card
+    entity = SUIT_ENTITIES[cardInfo.suit];
+    suitClassname = SUIT_CLASSNAMES[cardInfo.suit];
+  }
+  const classNames = [CardStyle.Card, suitClassname];
   if(chip != null) {
     let suffix = '';
     if(superChip) {
@@ -63,7 +73,7 @@ const Card = ({ cardNumber, chip, superChip, highlight = '', anim = false }) => 
   }
   return (
     <div className={classNames.join(' ')}>
-      <span dangerouslySetInnerHTML={{__html: SUIT_ENTITIES[cardInfo.suit] || '&nbsp;'}} />
+      <span dangerouslySetInnerHTML={{__html: entity}} />
       {VALUE_CHARS[cardInfo.value]}
     </div>
   );

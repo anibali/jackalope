@@ -43,7 +43,7 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber 
     }
   });
   const card = discardedCards[discardedCards.length - 1];
-  const cardNumber = card ? card.number : -1;
+  const cardNumber = card ? card.number : -2;
   let highlight = '';
   if(isOver) {
     highlight = 'primary';

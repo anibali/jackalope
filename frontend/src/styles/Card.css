@@ -41,6 +41,12 @@
   color: green;
 }
 
+.JokerCard {
+  color: white;
+  background-color: black;
+  font-size: 200%;
+}
+
 @keyframes Chip-appear {
   0% {
     opacity: 0;
