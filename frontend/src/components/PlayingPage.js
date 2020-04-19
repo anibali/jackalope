@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { Button, Col, FormControl, InputGroup, Row } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
@@ -7,38 +7,9 @@ import { connect } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import Board from './Board';
 import DiscardPile from './DiscardPile';
+import EasyCopyText from './EasyCopyText';
 import Hand from './Hand';
 import TurnIndicator from './TurnIndicator';
-
-
-const EasyCopyText = ({ text }) => {
-  const ref = useRef();
-
-  const copyToClipboard = useCallback(
-    () => {
-      // Select the text.
-      ref.current.select();
-      ref.current.setSelectionRange(0, 99999);
-      // Copy selection to clipboard.
-      document.execCommand('copy');
-    },
-    [ref],
-  );
-
-  return (
-    <InputGroup className="mb-3">
-      <FormControl
-        aria-label="Game room link"
-        ref={ref}
-        value={text}
-        readOnly
-      />
-      <InputGroup.Append>
-        <Button variant="secondary" onClick={copyToClipboard}>Copy</Button>
-      </InputGroup.Append>
-    </InputGroup>
-  );
-};
 
 
 const PlayingPage = ({ room, players, terminated, victor }) => {
