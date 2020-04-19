@@ -1,7 +1,6 @@
 import { Room } from 'colyseus';
-
+import { isOneEyedJack } from './getCardInfo';
 import GameState from './state/GameState';
-import { isOneEyedJack, isTwoEyedJack } from './getCardInfo';
 
 
 export default class extends Room {
