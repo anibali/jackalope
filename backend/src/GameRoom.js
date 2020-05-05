@@ -3,29 +3,29 @@ import { isOneEyedJack } from './getCardInfo';
 import GameState from './state/GameState';
 
 
-export default class extends Room {
-  constructor() {
-    super();
-    this.maxClients = 2;
-  }
-
-  onCreate(options) {
+class GameRoom extends Room {
+  onCreate({ numPlayers, unlisted }) {
     console.log(`created room ${this.roomId}`);
 
-    // If the room is private, make sure that it is unlisted.
-    if(options.private) {
+    if(!Number.isInteger(numPlayers) || numPlayers < 2 || numPlayers > 3) {
+      numPlayers = 2;
+    }
+    this.maxClients = numPlayers;
+
+    // Make sure that the room is unlisted if that's desired.
+    if(unlisted) {
       this.setPrivate();
     }
 
-    this.setState(new GameState());
+    this.setState(new GameState(numPlayers));
   }
 
   onJoin(client) {
     this.state.addPlayer(client.sessionId);
 
     const curPlayers = Object.keys(this.state.players);
-    if(curPlayers.length >= this.maxClients) {
-      const firstPlayerIndex = Math.floor(Math.random() * curPlayers.length);
+    if(curPlayers.length >= this.state.numPlayers) {
+      const firstPlayerIndex = Math.floor(Math.random() * this.state.numPlayers);
       this.state.currentTurn = curPlayers[firstPlayerIndex];
       // We've filled all player slots, so lock the room to prevent anyone else from joining.
       this.lock();
@@ -66,7 +66,8 @@ export default class extends Room {
       // Check victory condition.
       const sequences = this.state.findSequences(card.owner);
       this.state.players[card.owner].setSequences(sequences);
-      if(sequences.length >= 2) {
+      const sequencesToWin = this.state.numPlayers > 2 ? 1 : 2;
+      if(sequences.length >= sequencesToWin) {
         this.state.victor = card.owner;
         this.state.currentTurn = '';
       } else {
@@ -103,3 +104,6 @@ export default class extends Room {
     console.log(`disposed room ${this.roomId}`);
   }
 }
+
+
+export default GameRoom;

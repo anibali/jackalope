@@ -21,9 +21,10 @@ const crossBoardLayout = [
 /* eslint-enable no-multi-spaces */
 
 class GameState extends schema.Schema {
-  constructor() {
+  constructor(numPlayers) {
     super();
     this.players = new schema.MapSchema();
+    this.numPlayers = numPlayers;
 
     const boardChipsValues = [];
     for(let i = 0; i < 100; ++i) {
@@ -236,6 +237,7 @@ class GameState extends schema.Schema {
 schema.defineTypes(GameState, {
   currentTurn: 'string',
   players: { map: Player },
+  numPlayers: 'int8',
   boardChips: ['string'], // TODO: Make int8 for better efficiency
   boardLayout: ['int32'],
   cards: [Card],

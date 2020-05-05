@@ -5,10 +5,10 @@ import GameState from '../src/state/GameState';
 const parseBoardChips = rows => rows.flatMap(row => row.split('').map(c => (c === '.' ? '' : c)));
 
 
-describe('GameState', () => {
+describe('GameState(2)', () => {
   describe('#discardCard()', () => {
     it('should mark card as discarded', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       const card = state.cards[0];
       assert.isFalse(card.discarded);
       state.discardCard(card);
@@ -16,7 +16,7 @@ describe('GameState', () => {
     });
 
     it('should add card to discardPile', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       const card = state.cards[0];
       assert.isEmpty(state.discardPile);
       state.discardCard(card);
@@ -27,7 +27,7 @@ describe('GameState', () => {
   describe('#replaceDeadCard()', () => {
     context('when card is dead but player has already discarded', () => {
       it('should abort the action', () => {
-        const state = new GameState();
+        const state = new GameState(2);
         state.addPlayer('a');
         for(let i = 0; i < 7; ++i) {
           state.drawCard('a');
@@ -53,7 +53,7 @@ describe('GameState', () => {
 
   describe('#countSequences()', () => {
     context('when the board is empty', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
 
@@ -63,7 +63,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 5-chip horizontal sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -85,7 +85,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 6-chip horizontal sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -107,7 +107,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 5-chip vertical sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -129,7 +129,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 6-chip vertical sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -151,7 +151,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 5-chip diagonal sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -173,7 +173,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 9-chip horizontal sequence', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -195,7 +195,7 @@ describe('GameState', () => {
     });
 
     context('when there is a 4-chip horizontal sequence next to a corner', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -217,7 +217,7 @@ describe('GameState', () => {
     });
 
     context('when there are two 5-chip sequences sharing the top-left chip', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -239,7 +239,7 @@ describe('GameState', () => {
     });
 
     context('when there are two 5-chip sequences sharing the bottom-right chip', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([
@@ -261,7 +261,7 @@ describe('GameState', () => {
     });
 
     context('when there are two 5-chip diagonal sequences with different slopes', () => {
-      const state = new GameState();
+      const state = new GameState(2);
       state.addPlayer('a');
       state.addPlayer('b');
       state.boardChips = parseBoardChips([

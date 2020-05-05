@@ -88,6 +88,21 @@
   box-shadow: inset 0 0 4px 5px #fc5555;
 }
 
+.P3Chip {
+  background-color: #ccffcc;
+}
+
+.P3ChipAnim {
+  animation: Chip-appear 500ms;
+  background-color: #ccffcc;
+}
+
+.P3ChipSuper {
+  animation: Chip-appear 500ms;
+  background-color: #ccffcc;
+  box-shadow: inset 0 0 4px 5px #55fc55;
+}
+
 .CardHighlightPrimary {
   box-shadow: inset 0 0 2px 3px magenta;
 }

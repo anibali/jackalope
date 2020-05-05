@@ -12,7 +12,7 @@ import Hand from './Hand';
 import TurnIndicator from './TurnIndicator';
 
 
-const PlayingPage = ({ room, players, terminated, victor }) => {
+const PlayingPage = ({ room, players, numPlayers, terminated, victor }) => {
   const history = useHistory();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const PlayingPage = ({ room, players, terminated, victor }) => {
     return <Redirect to="/" />;
   }
 
-  if(Object.keys(players).length < 2) {
+  if(Object.keys(players).length < numPlayers) {
     let urlString = `${window.location.protocol}//${window.location.host}`;
     urlString += history.createHref({ pathname: `join/${room.id}` });
     return (
@@ -70,6 +70,7 @@ const PlayingPage = ({ room, players, terminated, victor }) => {
 
 export default connect(state => ({
   players: state.gameState.players || {},
+  numPlayers: state.gameState.numPlayers || 99,
   terminated: state.gameState.terminated,
   victor: state.gameState.victor,
 }))(PlayingPage);

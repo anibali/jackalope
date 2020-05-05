@@ -37,6 +37,7 @@ const VALUE_CHARS = {
 const CHIP_CLASSNAMES = {
   0: 'P1Chip',
   1: 'P2Chip',
+  2: 'P3Chip',
 };
 
 const HIGHLIGHT_CLASSNAMES = {

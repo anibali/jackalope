@@ -24,13 +24,13 @@ const ClientRoot = ({ store, gameClient }) => {
             <Route exact path="/playing">
               <PlayingPage room={room} />
             </Route>
-            <Route exact path="/join-public">
+            <Route exact path="/join-public/:numPlayers">
               <JoinPublicPage gameClient={gameClient} />
             </Route>
             <Route exact path="/join/:roomId">
               <JoinPage gameClient={gameClient} />
             </Route>
-            <Route exact path="/create-private">
+            <Route exact path="/create-private/:numPlayers">
               <CreatePrivatePage gameClient={gameClient} />
             </Route>
           </Router>

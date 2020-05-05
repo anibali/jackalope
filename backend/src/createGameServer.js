@@ -1,6 +1,6 @@
 import * as colyseus from 'colyseus';
 import http from 'http';
-import Game2pRoom from './Game2pRoom';
+import GameRoom from './GameRoom';
 
 
 export default (app) => {
@@ -10,7 +10,7 @@ export default (app) => {
     express: app,
   });
 
-  gameServer.define('game_2p_room', Game2pRoom);
+  gameServer.define('game_room', GameRoom);
 
   return gameServer;
 };
