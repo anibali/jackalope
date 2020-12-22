@@ -11,7 +11,7 @@ const REGULAR_SOCKET_SHUTDOWN = 1000;
 
 const toPlainData = (data) => {
   if(Array.isArray(data)) {
-    return data.map(toPlainData);
+    return [...data.map(toPlainData)];
   }
   if(data !== null && typeof data === 'object') {
     const plainData = {};

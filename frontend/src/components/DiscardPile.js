@@ -14,7 +14,7 @@ const DiscardPile = ({ discardedCards, boardLayout, boardChips, getCardByNumber 
       if(!room) {
         return;
       }
-      room.send({ type: 'replace-dead-card', payload: { cardNumber } });
+      room.send('replace-dead-card', { cardNumber });
     },
     [room],
   );

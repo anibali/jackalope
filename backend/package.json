@@ -22,7 +22,7 @@
     "@babel/register": "7.9.0",
     "@colyseus/schema": "0.5.35",
     "argparse": "1.0.10",
-    "colyseus": "0.12.5",
+    "colyseus": "0.13.0",
     "cors": "2.8.5",
     "d3-array": "2.4.0",
     "express": "4.17.1"
@@ -32,6 +32,6 @@
     "babel-loader": "8.1.0",
     "chai": "4.2.0",
     "mocha": "7.1.1",
-    "nodemon": "2.0.2"
+    "nodemon": "2.0.6"
   }
 }

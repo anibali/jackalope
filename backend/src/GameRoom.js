@@ -18,6 +18,9 @@ class GameRoom extends Room {
     }
 
     this.setState(new GameState(numPlayers));
+
+    this.onMessage('play-card', this.onPlayCard.bind(this));
+    this.onMessage('replace-dead-card', this.onReplaceDeadCard.bind(this));
   }
 
   onJoin(client) {
@@ -40,58 +43,52 @@ class GameRoom extends Room {
     console.log(`${client.id} joined ${this.roomId}`);
   }
 
-  onMessage(client, message) {
-    console.log(`${client.id} sent message ${JSON.stringify(message)} to room ${this.roomId}`);
-
-    if(message.type === 'play-card') {
-      const { cardNumber, boardLocation } = message.payload;
-      const oldChipOwner = this.state.boardChips[boardLocation];
-      // Find card in game state.
-      const card = this.state.getCardByNumber(cardNumber);
-      if(!card) {
-        return;
-      }
-      // Verify that client.id matches the card's owner.
-      if(card.owner !== client.id) {
-        return;
-      }
-      // Try to play the card.
-      if(!this.state.playCard(card, boardLocation)) {
-        return;
-      }
-      // If a one-eyed jack was played, recalculate sequences for player owning removed chip.
-      if(isOneEyedJack(cardNumber)) {
-        this.state.players[oldChipOwner].setSequences(this.state.findSequences(oldChipOwner));
-      }
-      // Check victory condition.
-      const sequences = this.state.findSequences(card.owner);
-      this.state.players[card.owner].setSequences(sequences);
-      const sequencesToWin = this.state.numPlayers > 2 ? 1 : 2;
-      if(sequences.length >= sequencesToWin) {
-        this.state.victor = card.owner;
-        this.state.currentTurn = '';
-      } else {
-        // Draw a replacement card.
-        this.state.drawCard(card.owner);
-        // Change current turn.
-        this.state.changeTurn();
-      }
+  onPlayCard(client, { cardNumber, boardLocation }) {
+    const oldChipOwner = this.state.boardChips[boardLocation];
+    // Find card in game state.
+    const card = this.state.getCardByNumber(cardNumber);
+    if(!card) {
+      return;
     }
-
-    if(message.type === 'replace-dead-card') {
-      const { cardNumber } = message.payload;
-      // Find card in game state.
-      const card = this.state.getCardByNumber(cardNumber);
-      if(!card) {
-        return;
-      }
-      // Verify that client.id matches the card's owner.
-      if(card.owner !== client.id) {
-        return;
-      }
-      // Try to replace the card.
-      this.state.replaceDeadCard(card);
+    // Verify that client.id matches the card's owner.
+    if(card.owner !== client.id) {
+      return;
     }
+    // Try to play the card.
+    if(!this.state.playCard(card, boardLocation)) {
+      return;
+    }
+    // If a one-eyed jack was played, recalculate sequences for player owning removed chip.
+    if(isOneEyedJack(cardNumber)) {
+      this.state.players[oldChipOwner].setSequences(this.state.findSequences(oldChipOwner));
+    }
+    // Check victory condition.
+    const sequences = this.state.findSequences(card.owner);
+    this.state.players[card.owner].setSequences(sequences);
+    const sequencesToWin = this.state.numPlayers > 2 ? 1 : 2;
+    if(sequences.length >= sequencesToWin) {
+      this.state.victor = card.owner;
+      this.state.currentTurn = '';
+    } else {
+      // Draw a replacement card.
+      this.state.drawCard(card.owner);
+      // Change current turn.
+      this.state.changeTurn();
+    }
+  }
+
+  onReplaceDeadCard(client, { cardNumber }) {
+    // Find card in game state.
+    const card = this.state.getCardByNumber(cardNumber);
+    if(!card) {
+      return;
+    }
+    // Verify that client.id matches the card's owner.
+    if(card.owner !== client.id) {
+      return;
+    }
+    // Try to replace the card.
+    this.state.replaceDeadCard(card);
   }
 
   onPermanentLeave(client) {

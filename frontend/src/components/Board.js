@@ -52,7 +52,7 @@ const PureBoard = ({ boardLayout, boardChips, players }) => {
       if(!room) {
         return;
       }
-      room.send({ type: 'play-card', payload: { cardNumber, boardLocation } });
+      room.send('play-card', { cardNumber, boardLocation });
     },
     [room],
   );
