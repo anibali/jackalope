@@ -53,9 +53,11 @@ const HandCard = ({ cardNumber, chip, index, moveCard }) => {
     }),
   });
   drag(drop(ref));
-  // TODO: Make this a CSS class instead.
-  const opacity = isDragging ? 0 : 1;
-  return <span style={{ opacity }} ref={ref}><Card cardNumber={cardNumber} chip={chip} /></span>;
+  return (
+    <span className={isDragging ? HandStyles.Hidden : ''} ref={ref}>
+      <Card cardNumber={cardNumber} chip={chip} />
+    </span>
+  );
 };
 
 

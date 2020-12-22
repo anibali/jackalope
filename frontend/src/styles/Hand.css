@@ -1,3 +1,7 @@
 .HandContainer {
   display: flex;
 }
+
+.Hidden {
+  opacity: 0;
+}
