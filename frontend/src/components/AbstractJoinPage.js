@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+import { ErrorCode } from 'colyseus.js';
+import { Button } from 'react-bootstrap';
 import RoomContext from '../RoomContext';
 import { changeGameState, clearGameState } from '../reducers/gameState';
 import { setRoomInfo } from '../reducers/roomInfo';
@@ -27,7 +29,7 @@ const toPlainData = (data) => {
 const AbstractJoinPage = ({ joinFunction, joinRoom }) => {
   const [room, setRoom] = useContext(RoomContext);
   const [joiningRoom, setJoiningRoom] = useState(false);
-  const [joinError, setJoinError] = useState(false);
+  const [joinError, setJoinError] = useState(null);
 
   useEffect(() => {
     if(room == null && !joiningRoom) {
@@ -35,8 +37,11 @@ const AbstractJoinPage = ({ joinFunction, joinRoom }) => {
       joinFunction().then(newRoom => {
         joinRoom(newRoom, setRoom);
       }).catch(err => {
-        console.error('JOIN ERROR', err);
-        setJoinError(true);
+        console.error('Join error:', err.message);
+        if(err == null) {
+          err = Error('unknown error');
+        }
+        setJoinError(err);
       });
     }
   });
@@ -45,11 +50,32 @@ const AbstractJoinPage = ({ joinFunction, joinRoom }) => {
     return <Redirect to="/playing" />;
   }
 
-  // TODO: Add link to return to home.
-  if(joinError) {
+  if(joinError != null) {
+    let message = '';
+    switch(joinError.code) {
+      case ErrorCode.MATCHMAKE_NO_HANDLER:
+        message = 'The requested type of room is not defined.';
+        break;
+      case ErrorCode.MATCHMAKE_INVALID_CRITERIA:
+        message = 'No rooms match the provided criteria';
+        break;
+      case ErrorCode.MATCHMAKE_INVALID_ROOM_ID:
+        message = 'Either the room is locked or does not exist.';
+        break;
+      case ErrorCode.MATCHMAKE_UNHANDLED:
+        message = 'Server-side room handling error.';
+        break;
+      case ErrorCode.MATCHMAKE_EXPIRED:
+        message = 'The session has expired.';
+        break;
+      default:
+        message = 'The reason is unknown.';
+    }
     return (
       <div>
-        Could not join room.
+        <p>Could not join the room.</p>
+        <p>{message}</p>
+        <Button as={Link} to="/">Back to Home</Button>
       </div>
     );
   }

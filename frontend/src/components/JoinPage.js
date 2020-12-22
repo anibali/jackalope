@@ -6,7 +6,7 @@ import AbstractJoinPage from './AbstractJoinPage';
 const JoinPage = ({ gameClient }) => {
   const { roomId } = useParams();
 
-  // TODO: Use reconnect instead when appropriate.
+  // TODO: Use sessionId option to reconnect instead when appropriate.
   const joinFunction = useCallback(
     () => gameClient.joinById(roomId),
     [gameClient, roomId],
