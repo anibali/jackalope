@@ -4,11 +4,21 @@ import * as Colyseus from 'colyseus.js';
 
 import createStore from './createStore';
 import ClientRoot from './components/ClientRoot';
+import { loadRoomInfo, saveRoomInfo, clearRoomInfo } from './persistence';
 
 
 // Client main function
 export default () => {
-  const store = createStore();
+  const oldRoomInfo = loadRoomInfo();
+  const store = createStore({ roomInfo: oldRoomInfo });
+  store.subscribe(() => {
+    const { roomInfo } = store.getState();
+    if(!roomInfo.sessionId || !roomInfo.roomId) {
+      clearRoomInfo();
+    } else {
+      saveRoomInfo(roomInfo);
+    }
+  });
 
   let gameServerAddress;
   if(process.env.NODE_ENV === 'production') {

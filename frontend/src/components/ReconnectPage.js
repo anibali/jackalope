@@ -3,13 +3,12 @@ import { useParams } from 'react-router-dom';
 import AbstractJoinPage from './AbstractJoinPage';
 
 
-const JoinPage = ({ gameClient }) => {
-  const { roomId } = useParams();
+const ReconnectPage = ({ gameClient }) => {
+  const { roomId, sessionId } = useParams();
 
-  // TODO: Use reconnect instead when appropriate.
   const joinFunction = useCallback(
-    () => gameClient.joinById(roomId),
-    [gameClient, roomId],
+    () => gameClient.reconnect(roomId, sessionId),
+    [gameClient, roomId, sessionId],
   );
 
   return (
@@ -18,4 +17,4 @@ const JoinPage = ({ gameClient }) => {
 };
 
 
-export default JoinPage;
+export default ReconnectPage;

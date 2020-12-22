@@ -94,10 +94,21 @@ class GameRoom extends Room {
     }
   }
 
-  onLeave(client) {
-    console.log(`${client.id} left ${this.roomId}`);
+  onPermanentLeave(client) {
     // Any player leaving terminates the game.
     this.state.terminated = true;
+  }
+
+  onLeave(client, consented) {
+    console.log(`${client.id} left ${this.roomId}`);
+
+    if(consented) {
+      this.onPermanentLeave(client);
+    } else {
+      this.allowReconnection(client, 30).catch(() => {
+        this.onPermanentLeave(client);
+      });
+    }
   }
 
   onDispose() {

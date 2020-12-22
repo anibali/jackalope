@@ -8,10 +8,11 @@ import HomePage from './HomePage';
 import JoinPage from './JoinPage';
 import JoinPublicPage from './JoinPublicPage';
 import PlayingPage from './PlayingPage';
+import ReconnectPage from './ReconnectPage';
 
 
-const ClientRoot = ({ store, gameClient }) => {
-  const [room, setRoom] = useState(null);
+const ClientRoot = ({ store, gameClient, initialRoom }) => {
+  const [room, setRoom] = useState(initialRoom);
 
   return (
     <Provider store={store}>
@@ -32,6 +33,9 @@ const ClientRoot = ({ store, gameClient }) => {
             </Route>
             <Route exact path="/create-private/:numPlayers">
               <CreatePrivatePage gameClient={gameClient} />
+            </Route>
+            <Route exact path="/reconnect/:roomId/:sessionId">
+              <ReconnectPage gameClient={gameClient} />
             </Route>
           </Router>
         </Container>

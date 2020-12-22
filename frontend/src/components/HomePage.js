@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { Button, Card, Col, Row, DropdownButton, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
 const numPlayersOptions = [2, 3];
 
 
-const HomePage = () => {
+const HomePage = ({ roomInfo }) => {
   const [numPlayers, setNumPlayers] = useState(numPlayersOptions[0]);
   const onChangeNumPlayers = useCallback(
     eventKey => {
@@ -15,6 +16,19 @@ const HomePage = () => {
     [setNumPlayers],
   );
 
+  let reconnectRow = null;
+  // TODO: Have some mechanism by which the Reconnect button is removed when it
+  //       no longer works.
+  if(roomInfo.roomId && roomInfo.sessionId) {
+    reconnectRow = (
+      <Row className="mt-2">
+        <Col>
+          <Button as={Link} to={`/reconnect/${roomInfo.roomId}/${roomInfo.sessionId}`} variant="warning" block>Reconnect</Button>
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <Card style={{ maxWidth: 320, margin: 'auto' }} body>
       <Row>
@@ -22,6 +36,7 @@ const HomePage = () => {
           <h1>Jackalope</h1>
         </Col>
       </Row>
+      {reconnectRow}
       <Row className="mt-2">
         <Col>
           <DropdownButton
@@ -57,4 +72,7 @@ const HomePage = () => {
 };
 
 
-export default HomePage;
+export default connect(state => {
+  const { roomInfo } = state;
+  return { roomInfo };
+})(HomePage);

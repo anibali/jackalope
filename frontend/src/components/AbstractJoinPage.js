@@ -6,6 +6,9 @@ import { changeGameState, clearGameState } from '../reducers/gameState';
 import { setRoomInfo } from '../reducers/roomInfo';
 
 
+const REGULAR_SOCKET_SHUTDOWN = 1000;
+
+
 const toPlainData = (data) => {
   if(Array.isArray(data)) {
     return data.map(toPlainData);
@@ -42,6 +45,7 @@ const AbstractJoinPage = ({ joinFunction, joinRoom }) => {
     return <Redirect to="/playing" />;
   }
 
+  // TODO: Add link to return to home.
   if(joinError) {
     return (
       <div>
@@ -69,9 +73,11 @@ export default connect(
           dispatch(changeGameState({ field: change.field, value }));
         });
       };
-      room.onLeave(() => {
+      room.onLeave(code => {
         dispatch(clearGameState());
-        dispatch(setRoomInfo({ sessionId: null, roomId: null }));
+        if(code === REGULAR_SOCKET_SHUTDOWN) {
+          dispatch(setRoomInfo({ sessionId: null, roomId: null }));
+        }
         setRoom(null);
       });
       dispatch(setRoomInfo({ sessionId: room.sessionId, roomId: room.id }));
