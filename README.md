@@ -20,6 +20,11 @@ $ npm start
 1. From `backend/`, run `npx nodemon`
 2. From `frontend/`, run `npm start`
 
+### Storybook
+
+Individual React components can be tested manually using Storybook. To start
+Storybook, run `npm run storybook` from `frontend/`.
+
 ### TODO
 
 * Add a quick way to reset the room and play again once a game finishes.

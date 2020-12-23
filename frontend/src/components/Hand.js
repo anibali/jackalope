@@ -61,10 +61,9 @@ const HandCard = ({ cardNumber, chip, index, moveCard }) => {
 };
 
 
-const Hand = ({ hand, chip }) => {
+const PureHand = ({ handNumbers, chip }) => {
   const [handOrder, setHandOrder] = useState([]);
 
-  const handNumbers = [...hand.map(card => card.number)];
   handNumbers.sort((a, b) => {
     if(!handOrder.includes(a)) {
       return 1;
@@ -103,10 +102,13 @@ const Hand = ({ hand, chip }) => {
 };
 
 
+export { PureHand };
+
 export default connect(state => {
   const cards = state.gameState.cards || [];
   const playerId = state.roomInfo.sessionId;
   const hand = cards.filter(card => card.owner === playerId && !card.discarded);
+  const handNumbers = [...hand.map(card => card.number)];
   const chip = state.gameState.players[playerId].seatNumber;
-  return { hand, chip };
-})(Hand);
+  return { handNumbers, chip };
+})(PureHand);
